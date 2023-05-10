@@ -5,13 +5,13 @@ const prisma = new PrismaClient();
 const addJob = express.Router();
 
 const validateUserInput = [
-    body('title').optional().isString().withMessage('title must be string'),
-    body('description').optional().isString().withMessage('description must be string'),
-    body('location').optional().isString().withMessage('location must be string'),
-    body('requirements').optional().isString().withMessage('requirements must be string'),
-    body('salaryMin').optional().isInt({ min: 200 }).withMessage('salaryMin must be int >= 200'),
-    body('salaryMax').optional().isInt({ min: 200 }).withMessage('salaryMax must be int >= 200'),
-    body('postedById').optional().isInt().withMessage('postedById must be integer'),
+    body('title').exists().withMessage('title must be defined here').bail().isString().withMessage('title must be string'),
+    body('description').exists().withMessage('description must be defined here').bail().isString().withMessage('description must be string'),
+    body('location').exists().withMessage('location must be defined here').bail().isString().withMessage('location must be string'),
+    body('requirements').exists().withMessage('requirements must be defined here').bail().isString().withMessage('requirements must be string'),
+    body('salaryMin').exists().withMessage('salaryMin must be defined here').bail().isInt({ min: 200 }).withMessage('salaryMin must be int >= 200'),
+    body('salaryMax').exists().withMessage('salaryMax must be defined here').bail().isInt({ min: 200 }).withMessage('salaryMax must be int >= 200'),
+    body('email').exists().withMessage('email must be defined here').bail().isString().withMessage('email must be string'),
     (req, res, next) => {
       const errors = validationResult(req);
       if (errors.isEmpty()) {
@@ -25,7 +25,13 @@ const validateUserInput = [
 
 
 addJob.post('/',validateUserInput, async (req , res) => {
-  const { title, description, location, requirements, salaryMin, salaryMax, postedById } = req.body;
+  const { title, description, location, requirements, salaryMin, salaryMax, email } = req.body;
+  const empJob = await prisma.employer.findUnique({
+    where: {
+      email,
+    }
+  });
+  const empId = empJob.id;
   const newJob = await prisma.job.create({
     data: {
         title,
@@ -34,6 +40,7 @@ addJob.post('/',validateUserInput, async (req , res) => {
         requirements,
         salaryMin,
         salaryMax,
+        postedById:empId,
     }
   });
   res.send({

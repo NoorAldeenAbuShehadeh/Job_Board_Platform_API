@@ -1,9 +1,12 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import searchJob from './API_integration/searchJob.js';
+import addJob from './API_integration/addJob.js';
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json())
+
+app.use('/addJob', addJob);//search job by filtering
 
 app.use('/searchJob', searchJob);//search job by filtering
 

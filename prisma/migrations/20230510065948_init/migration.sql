@@ -3,6 +3,7 @@ CREATE TABLE `job` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
+    `location` VARCHAR(191) NOT NULL,
     `requirements` VARCHAR(191) NOT NULL,
     `salaryMin` INTEGER NULL,
     `salaryMax` INTEGER NULL,

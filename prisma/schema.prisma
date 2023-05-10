@@ -22,6 +22,7 @@ model job {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   applications jobApplication[]
+  savedjob saveJob[]
 }
 
 model employer {
@@ -56,4 +57,13 @@ model applicant {
   Address     String
   password    String
   applications jobApplication[]
+  jobSaved saveJob[]
+}
+
+model saveJob{
+  id Int @id @default(autoincrement()) 
+  job         job      @relation(fields: [jobId], references: [id])
+  jobId       Int
+  applicant   applicant @relation(fields: [applicantId], references: [id])
+  applicantId Int
 }

@@ -52,6 +52,15 @@ CREATE TABLE `applicant` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `saveJob` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `jobId` INTEGER NOT NULL,
+    `applicantId` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `job` ADD CONSTRAINT `job_postedById_fkey` FOREIGN KEY (`postedById`) REFERENCES `employer`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
@@ -60,3 +69,9 @@ ALTER TABLE `jobApplication` ADD CONSTRAINT `jobApplication_jobId_fkey` FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE `jobApplication` ADD CONSTRAINT `jobApplication_applicantId_fkey` FOREIGN KEY (`applicantId`) REFERENCES `applicant`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `saveJob` ADD CONSTRAINT `saveJob_jobId_fkey` FOREIGN KEY (`jobId`) REFERENCES `job`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `saveJob` ADD CONSTRAINT `saveJob_applicantId_fkey` FOREIGN KEY (`applicantId`) REFERENCES `applicant`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

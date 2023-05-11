@@ -15,20 +15,20 @@ app.listen(3000, () =>
 );
 
 
-// app.get('/employer', async (req, res) => {
-//   const employer = await prisma.employer.create({
-//     data: {
-//       name:'Noor Aldeen',
-//       email:'s11923513@stu.najah.edu',
-//       phone:'0597356188',
-//       Address:'Hawara',
-//       password:'123456'
-//     }
-//   });
-//     res.send({
-//       status: 'successfully created'
-//     });
-// });
+app.get('/employer', async (req, res) => {
+  const employer = await prisma.employer.create({
+    data: {
+      name:'Noor Aldeen',
+      email:'s11923513@stu.najah.edu',
+      phone:'0597356188',
+      Address:'Hawara',
+      password:'123456'
+    }
+  });
+    res.send({
+      status: 'successfully created'
+    });
+});
 
 // app.get('/job', async (req, res) => {
 //   const job = await prisma.job.create({

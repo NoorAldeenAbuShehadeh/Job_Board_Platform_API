@@ -15,9 +15,9 @@ app.use('/searchJob', searchJob);//search job by filtering
 
 app.use('/application',application);//applicant job and update the request
 
-app.use('/saveJob', saveJob);
+app.use('/saveJob', saveJob);//save a certain job from applicant side
 
-app.use('/employer', employer);
+app.use('/employer', employer);//add/delete/update/read information of employer
 
 app.listen(3000, () =>
   console.log(`🚀 Server ready at: http://localhost:3000`)

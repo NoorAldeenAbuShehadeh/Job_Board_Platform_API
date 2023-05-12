@@ -4,6 +4,7 @@ import searchJob from './API_integration/searchJob.js';
 import Job from './API_integration/Job.js';
 import saveJob from './API_integration/saveJob.js';
 import employer from './API_integration/employer.js';
+import application from './API_integration/application.js'
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json())
@@ -11,6 +12,8 @@ app.use(express.json())
 app.use('/Job', Job);//add and manage job
 
 app.use('/searchJob', searchJob);//search job by filtering
+
+app.use('/application',application);//applicant job and update the request
 
 app.use('/saveJob', saveJob);
 

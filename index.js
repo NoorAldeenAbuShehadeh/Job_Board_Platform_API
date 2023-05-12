@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import searchJob from './API_integration/searchJob.js';
 import Job from './API_integration/Job.js';
 import saveJob from './API_integration/saveJob.js';
+import employer from './API_integration/employer.js';
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json())
@@ -12,6 +13,8 @@ app.use('/Job', Job);//add and manage job
 app.use('/searchJob', searchJob);//search job by filtering
 
 app.use('/saveJob', saveJob);
+
+app.use('/employer', employer);
 
 app.listen(3000, () =>
   console.log(`🚀 Server ready at: http://localhost:3000`)

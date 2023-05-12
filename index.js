@@ -2,13 +2,16 @@ import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import searchJob from './API_integration/searchJob.js';
 import Job from './API_integration/Job.js';
+import saveJob from './API_integration/saveJob.js';
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json())
 
-app.use('/Job', Job);//search job by filtering
+app.use('/Job', Job);//add and manage job
 
 app.use('/searchJob', searchJob);//search job by filtering
+
+app.use('/saveJob', saveJob);
 
 app.listen(3000, () =>
   console.log(`🚀 Server ready at: http://localhost:3000`)
@@ -22,6 +25,22 @@ app.get('/employer', async (req, res) => {
       email:'s11923513@stu.najah.edu',
       phone:'0597356188',
       Address:'Hawara',
+      password:'123456'
+    }
+  });
+    res.send({
+      status: 'successfully created'
+    });
+});
+
+app.get('/applicant', async (req, res) => {
+  const applicant = await prisma.applicant.create({
+    data: {
+      firstName:'Haitham',
+      lastName: 'Hinnawi',
+      email:'s11924343@stu.najah.edu',
+      phone:'0597505661',
+      Address:'Nablus',
       password:'123456'
     }
   });

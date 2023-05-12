@@ -5,6 +5,7 @@ import Job from './API_integration/Job.js';
 import saveJob from './API_integration/saveJob.js';
 import employer from './API_integration/employer.js';
 import application from './API_integration/application.js'
+import manageApplicants from './API_integration/manageApplicants.js'
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json())
@@ -18,6 +19,9 @@ app.use('/application',application);//applicant job and update the request
 app.use('/saveJob', saveJob);//save a certain job from applicant side
 
 app.use('/employer', employer);//add/delete/update/read information of employer
+
+app.use('/manageApplicants', manageApplicants);// can see all applicants to the selected job 
+//and can update status for any applicant e.g. pending, accepted, rejected
 
 app.listen(3000, () =>
   console.log(`🚀 Server ready at: http://localhost:3000`)

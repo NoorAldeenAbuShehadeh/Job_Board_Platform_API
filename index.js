@@ -14,7 +14,8 @@ app.use('/Job', Job);//add and manage job
 
 app.use('/searchJob', searchJob);//search job by filtering
 
-app.use('/application',application);//applicant job and update the request
+app.use('/application',application);//applicant job and update the request 
+//the applicant can see the application submitted and can delete any one
 
 app.use('/saveJob', saveJob);//save a certain job from applicant side
 

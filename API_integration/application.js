@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
-import {body, validationResult} from 'express-validator'
+import {body, validationResult, query} from 'express-validator'
 const prisma = new PrismaClient();
 const applicationSubmission = express.Router();
 
@@ -36,7 +36,7 @@ const validateApplicationSubmission = [
     }
   })
   if(!exist){
-  const applicantIdJob = await prisma.jobApplication.create({
+  const applicantJob = await prisma.jobApplication.create({
     data: {
         jobId,
         applicantId,
@@ -46,7 +46,7 @@ const validateApplicationSubmission = [
     }
   });
   res.send({
-    applicantIdJob,
+    applicantJob,
   });
 }
   else{
@@ -109,5 +109,71 @@ applicationSubmission.put('/update/:id', validateApplicantInput, async(req, res)
     }
     
   });
+/********************************************************************************************/
+const validateIDInput = [
+  query('applicantId').exists().withMessage('applicantId must be defined here').bail().isInt({min:0}).withMessage('applicantId must be int > 0'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      return next();
+    }
+    const extractedErrors = [];
+    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
+    return res.status(422).json({ errors: extractedErrors });
+  },
+]
+
+
+applicationSubmission.get('/seeAppSubmitted', validateIDInput, async(req, res) => {
+const { applicantId } = req.query;
+  const findAppSubmitted = await prisma.jobApplication.findMany({
+    where: {
+      applicantId: +applicantId,
+    }
+  });
+  
+    res.send(findAppSubmitted);
+  
+});
+
+/********************************************************************************************/
+const validateIDAppSubmitted = [
+  query('id').exists().withMessage('id must be defined here').bail().isInt({min:0}).withMessage('id must be int > 0'),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (errors.isEmpty()) {
+      return next();
+    }
+    const extractedErrors = [];
+    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
+    return res.status(422).json({ errors: extractedErrors });
+  },
+]
+
+
+applicationSubmission.delete('/deleteSubmittedApp', validateIDAppSubmitted, async(req, res) => {
+const { id } = req.query;
+  const findAppSubmitted = await prisma.jobApplication.findUnique({
+    where: {
+      id: +id,
+    }
+  });
+  
+    if(findAppSubmitted){
+      const deleted = await prisma.jobApplication.delete({
+        where: {
+          id: +id,
+        }
+      });
+
+      res.send({
+        Message:"jobApplication with id = "+id+" Deleted successfully"
+      });
+    }
+    else res.send({
+      Message:"No such jobApplication that have id= "+id
+    });
+  
+});
 
 export default applicationSubmission;

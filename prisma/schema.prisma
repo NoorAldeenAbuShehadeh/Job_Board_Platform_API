@@ -53,7 +53,7 @@ model applicant {
   id          Int             @id @default(autoincrement())
   firstName   String
   lastName    String
-  email       String
+  email       String          @unique
   phone       String
   Address     String
   password    String

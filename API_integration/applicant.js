@@ -2,10 +2,13 @@ import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {body, validationResult} from 'express-validator'
 const prisma = new PrismaClient();
-const employer = express.Router();
+const applicant = express.Router();
+
+
 
 const validateUserInputPost = [
-    body('name').exists().withMessage('name must be defined here').bail().isString().withMessage('name must be string'),
+    body('firstName').exists().withMessage('firstName must be defined here').bail().isString().withMessage('firstName must be string'),
+    body('lastName').exists().withMessage('lastName must be defined here').bail().isString().withMessage('lastName must be string'),
     body('email').exists().withMessage('email must be defined here').bail().isString().withMessage('email must be string'),
     body('phone').exists().withMessage('phone must be defined here').bail().isString().withMessage('phone must be string'),
     body('Address').exists().withMessage('Address must be defined here').bail().isString().withMessage('address must be string'),
@@ -22,7 +25,8 @@ const validateUserInputPost = [
   ]
 
   const validateUserInputPut = [
-    body('name').optional().isString().withMessage('name must be string'),
+    body('firstName').optional().isString().withMessage('firstName must be string'),
+    body('lastName').optional().isString().withMessage('lastName must be string'),
     body('email').optional().isString().withMessage('email must be string'),
     body('phone').optional().isString().withMessage('phone must be string'),
     body('Address').optional().isString().withMessage('address must be string'),
@@ -38,17 +42,18 @@ const validateUserInputPost = [
     },
   ]
 
-employer.post('/add', validateUserInputPost, async (req, res) => {
-    const { name, email, phone, Address, password } = req.body;
-    const findEmp = await prisma.employer.findUnique({
+applicant.post('/add', validateUserInputPost, async (req, res) => {
+    const { firstName, lastName, email, phone, Address, password } = req.body;
+    const findApp = await prisma.applicant.findUnique({
         where: {
           email,
         }
       });
-    if(!findEmp){
-        const employer = await prisma.employer.create({
+    if(!findApp){
+        const applicant = await prisma.applicant.create({
             data: {
-              name,
+              firstName,
+              lastName,
               email,
               phone,
               Address,
@@ -57,7 +62,7 @@ employer.post('/add', validateUserInputPost, async (req, res) => {
           });
             res.send({
               status: 'successfully created',
-              employer
+              applicant
             });
     }
     else{
@@ -68,74 +73,102 @@ employer.post('/add', validateUserInputPost, async (req, res) => {
     
   });
 
-employer.delete('/delete/:id', async(req, res) => {
-    const findEmp = await prisma.employer.findUnique({
+  applicant.delete('/delete/:id', async(req, res) => {
+    const findJobSearch = await prisma.saveJob.findMany({
+        where: {
+            applicantId: +req.params.id,
+        }
+    })
+    let i=0;
+    for(i=0; i<findJobSearch.length; i++){
+        await prisma.saveJob.delete({
+            where: {
+                id: findJobSearch[i].id,
+            }
+        })
+    }
+    const findJobApplication = await prisma.jobApplication.findMany({
+        where: {
+            applicantId: +req.params.id,
+        }
+    })
+    for(i=0; i<findJobApplication.length; i++){
+        await prisma.jobApplication.delete({
+            where: {
+                id: findJobApplication[i].id,
+            }
+        })
+    }
+    const findApp = await prisma.applicant.findUnique({
         where: {
         id: +req.params.id,
         }
     });
-    if(findEmp){
-        const deleteEmp = await prisma.employer.delete({
+    if(findApp){
+        const deleteEmp = await prisma.applicant.delete({
         where: {
             id: +req.params.id,
         },
         })
-        res.send({
-        Message: 'The employer with id: ' + req.params.id + ' deleted successfully',
+        res.send({   
+        Message: 'The applicant with id: ' + req.params.id + ' deleted successfully',
         });
     }
     else{
         res.send({
-        Message: 'There is no employer with id: ' + req.params.id,
+        Message: 'There is no applicant with id: ' + req.params.id,
         });
     }
 });
 
-employer.get('/get/:id', async(req, res) => {
-    const findEmp = await prisma.employer.findUnique({
+applicant.get('/get/:id', async(req, res) => {
+    const findApp = await prisma.applicant.findUnique({
         where:{
             id: +req.params.id,
         }
     });
-    if(findEmp){
+    if(findApp){
         res.send({
-            findEmp,
+            findApp,
         })
     }
     else{
         res.send({
-            message: 'There is no employer with id: ' + req.params.id,
+            message: 'There is no applicant with id: ' + req.params.id,
         })
     }
 
 });
 
-employer.get('/getAll/', async(req, res) => {
-    const findEmp = await prisma.employer.findMany();
-    if(findEmp){
+applicant.get('/getAll/', async(req, res) => {
+    const findApp = await prisma.applicant.findMany();
+    if(findApp){
         res.send({
-            findEmp,
+            findApp,
         })
     }
     else{
         res.send({
-            message: 'There is no employers registered',
+            message: 'There is no applicants registered',
         })
     }
 
 });
 
-employer.put('/update/:id', validateUserInputPut, async(req, res) => {
-    const { name, email, phone, Address, password } = req.body;
-    const findEmp = await prisma.employer.findUnique({
+applicant.put('/update/:id', validateUserInputPut, async(req, res) => {
+    const { firstName, lastName, email, phone, Address, password } = req.body;
+    const findApp = await prisma.applicant.findUnique({
       where: {
         id: +req.params.id,
       }
     });
-    if(findEmp){
+    if(findApp){
       const newData = {};
-      if (name) {
-        newData.name = name;
+      if (firstName) {
+        newData.firstName = firstName;
+      }
+      if (lastName) {
+        newData.lastName = lastName;
       }
       if (email) {
         newData.email = email;
@@ -149,26 +182,26 @@ employer.put('/update/:id', validateUserInputPut, async(req, res) => {
       if (password) {
         newData.password = password;
       }
-      const updateEmp = await prisma.employer.update({
+      const updateApp = await prisma.applicant.update({
         where: {
           id: +req.params.id,
         },
         data: newData,
       })
-      const EmpId = await prisma.employer.findUnique({
+      const appId = await prisma.applicant.findUnique({
         where: {
           id: +(req.params.id),
         },
       })
-      res.send(EmpId);
+      res.send(appId);
     }
     else{
       res.send({
-        Message: 'There is no employer with id: ' + req.params.id,
+        Message: 'There is no applicant with id: ' + req.params.id,
       });
     }
     
   });
 
 
-  export default employer;
+export default applicant;

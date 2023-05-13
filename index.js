@@ -4,8 +4,10 @@ import searchJob from './API_integration/searchJob.js';
 import Job from './API_integration/Job.js';
 import saveJob from './API_integration/saveJob.js';
 import employer from './API_integration/employer.js';
+import applicant from './API_integration/applicant.js';
 import application from './API_integration/application.js'
 import manageApplicants from './API_integration/manageApplicants.js'
+
 const prisma = new PrismaClient();
 const app = express();
 app.use(express.json())
@@ -24,41 +26,43 @@ app.use('/employer', employer);//add/delete/update/read information of employer
 app.use('/manageApplicants', manageApplicants);// can see all applicants to the selected job 
 //and can update status for any applicant e.g. pending, accepted, rejected
 
+app.use('/applicant', applicant);// CRUD operation on applicant 
+
 app.listen(3000, () =>
   console.log(`🚀 Server ready at: http://localhost:3000`)
 );
 
 
-app.get('/employer', async (req, res) => {
-  const employer = await prisma.employer.create({
-    data: {
-      name:'Noor Aldeen',
-      email:'s11923513@stu.najah.edu',
-      phone:'0597356188',
-      Address:'Hawara',
-      password:'123456'
-    }
-  });
-    res.send({
-      status: 'successfully created'
-    });
-});
+// app.get('/employer', async (req, res) => {
+//   const employer = await prisma.employer.create({
+//     data: {
+//       name:'Noor Aldeen',
+//       email:'s11923513@stu.najah.edu',
+//       phone:'0597356188',
+//       Address:'Hawara',
+//       password:'123456'
+//     }
+//   });
+//     res.send({
+//       status: 'successfully created'
+//     });
+// });
 
-app.get('/applicant', async (req, res) => {
-  const applicant = await prisma.applicant.create({
-    data: {
-      firstName:'Haitham',
-      lastName: 'Hinnawi',
-      email:'s11924343@stu.najah.edu',
-      phone:'0597505661',
-      Address:'Nablus',
-      password:'123456'
-    }
-  });
-    res.send({
-      status: 'successfully created'
-    });
-});
+// app.get('/applicant', async (req, res) => {
+//   const applicant = await prisma.applicant.create({
+//     data: {
+//       firstName:'Haitham',
+//       lastName: 'Hinnawi',
+//       email:'s11924343@stu.najah.edu',
+//       phone:'0597505661',
+//       Address:'Nablus',
+//       password:'123456'
+//     }
+//   });
+//     res.send({
+//       status: 'successfully created'
+//     });
+// });
 
 // app.get('/job', async (req, res) => {
 //   const job = await prisma.job.create({

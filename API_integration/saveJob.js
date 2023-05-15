@@ -18,6 +18,9 @@ const saveJobValidation = [body('jobId').exists().withMessage('jobId must be def
 
 saveJob.post('/:id',saveJobValidation, async (req , res) => {
     const { jobId } = req.body;
+    if(!await prisma.saveJob.findFirst({where:{
+      jobId
+    }})){
     const newJob = await prisma.saveJob.create({
       data: {
         applicantId: +req.params.id,
@@ -27,6 +30,12 @@ saveJob.post('/:id',saveJobValidation, async (req , res) => {
     res.send({
       newJob,
     });
+  }
+  else{
+    res.send({
+      Message:'this job already saved'
+    });
+  }
   });
 
   export default saveJob;

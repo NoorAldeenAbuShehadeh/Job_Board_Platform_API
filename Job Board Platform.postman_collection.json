@@ -1,0 +1,636 @@
+{
+	"info": {
+		"_postman_id": "32f11bfe-5932-445a-98b5-5a6e4b5db241",
+		"name": "Job Board Platform",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25331169"
+	},
+	"item": [
+		{
+			"name": "Job",
+			"item": [
+				{
+					"name": "addJob",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Computer engineer\",\r\n    \"description\": \"a front developer\",\r\n    \"location\": \"Nablus\",\r\n    \"requirements\": \"a BCs in CE\",\r\n    \"salaryMin\": 900,\r\n    \"salaryMax\": 2000,\r\n    \"email\": \"s11924343@stu.najah.edu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/Job/add",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Job",
+								"add"
+							]
+						},
+						"description": "add new job by employer\n\nenter all information about a job\n\nStartFragment\n\n``` json\n{\n    \"title\": text,\n    \"description\": text,\n    \"location\": text,\n    \"requirements\": text,\n    \"salaryMin\": number,\n    \"salaryMax\": number,\n    \"email\": text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteJob",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/Job/delete/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Job",
+								"delete",
+								"3"
+							]
+						},
+						"description": "delete a certan job by employer\n\nenter Jobid\n\nStartFragment\n\nlocalhost:3000/Job/delete/**id**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "jobUpdate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Computer science\",\r\n    \"requirements\": \"a PHD in CS\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/Job/update/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"Job",
+								"update",
+								"2"
+							]
+						},
+						"description": "update job by employer enter jobid and enter any one of information that need to change it.\n\nStartFragment\n\nlocalhost:3000/Job/update/**id**\n\nEndFragmentStartFragment\n\n``` json\n{\n    \"title\": text,\n    \"description\": text,\n    \"location\": text,\n    \"requirements\": text,\n    \"salaryMin\": number,\n    \"salaryMax\": number,\n    \"email\": text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "search job",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/searchJob?salaryMax=2000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"searchJob"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Computer science",
+									"disabled": true
+								},
+								{
+									"key": "location",
+									"value": "Nablus",
+									"disabled": true
+								},
+								{
+									"key": "salaryMin",
+									"value": "900",
+									"disabled": true
+								},
+								{
+									"key": "salaryMax",
+									"value": "2000"
+								}
+							]
+						},
+						"description": "get jobs by entering filtering information\n\nStartFragment\n\ntitle : text\n\nlocation: text\n\nsalaryMin: number\n\nsalaryMax: number\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "see  all applicants for a job",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/manageApplicants/seeAll?jobId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"manageApplicants",
+								"seeAll"
+							],
+							"query": [
+								{
+									"key": "jobId",
+									"value": "2"
+								}
+							]
+						},
+						"description": "the employer can see all applcant for certan job by enter the **jobId**"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employer",
+			"item": [
+				{
+					"name": "addEmployer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Noor Aldeen\",\r\n    \"email\":\"s11923513@stu.najah.edu\",\r\n    \"phone\":\"0597356188\",\r\n    \"Address\":\"Nablus\",\r\n    \"password\":\"654321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/employer/add",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employer",
+								"add"
+							]
+						},
+						"description": "can register new employer by enter your nformaton\n\nStartFragment\n\n``` json\n{\n    \"name\":text,\n    \"email\":text,\n    \"phone\":text,\n    \"Address\":text,\n    \"password\":text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteEmployer",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/employer/delete/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employer",
+								"delete",
+								"2"
+							]
+						},
+						"description": "can delete employer by enter the employer id\n\nStartFragment\n\nlocalhost:3000/employer/delete/**id**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllEmployers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/employer/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employer",
+								"getAll"
+							]
+						},
+						"description": "can get all emloyer by this link not need to enter any informations"
+					},
+					"response": []
+				},
+				{
+					"name": "updateEmployer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Haitham Hinnawi\",\r\n    \"password\": \"100200300\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/employer/update/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employer",
+								"update",
+								"1"
+							]
+						},
+						"description": "can update the information of an employer by enter the employer id and any other information need to update it.\n\nStartFragment\n\nlocalhost:3000/employer/update/**id**\n\nEndFragmentStartFragment\n\n``` json\n{\n    \"name\":text,\n    \"email\":text,\n    \"phone\":text,\n    \"Address\":text,\n    \"password\":text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "getEmployerByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/employer/get/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employer",
+								"get",
+								"3"
+							]
+						},
+						"description": "can get all information of an employer by enter the employer id\n\nStartFragment\n\nlocalhost:3000/employer/get/**id**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "update status for an applcant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobApplicationId\":2,\r\n    \"status\":\"accepted\"\r\n}\r\n\r\n/*\r\nstatus ==> pending, accepted, rejected\r\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/manageApplicants/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"manageApplicants",
+								"update"
+							]
+						},
+						"description": "the employer can update status for the applicant applcation by enter the following information\n\nStartFragment\n\n``` json\n{\n    \"jobApplicationId\": number,\n    \"status\":text\n}\n\n/*\nstatus ==> pending, accepted, rejected\n*/\n```\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applicant",
+			"item": [
+				{
+					"name": "addApplicant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Qutaba\",\r\n    \"lastName\": \"Darawshi\",\r\n    \"email\":\"s11925874@stu.najah.edu\",\r\n    \"phone\":\"0592222222\",\r\n    \"Address\":\"Nablus\",\r\n    \"password\":\"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/applicant/add",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"applicant",
+								"add"
+							]
+						},
+						"description": "StartFragment\n\ncan register new employer by enter your nformaton\n\nEndFragmentStartFragment\n\n``` json\n{\n    \"firstName\":text,\n    \"lastName\": text,\n    \"email\":text,\n    \"phone\":text,\n    \"Address\":text,\n    \"password\":text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteApplicant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/applicant/delete/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"applicant",
+								"delete",
+								"1"
+							]
+						},
+						"description": "can delete an applcant by enter the applcant id\n\nStartFragment\n\nlocalhost:3000/applicant/delete/**id**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "getApplicantByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/applicant/get/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"applicant",
+								"get",
+								"1"
+							]
+						},
+						"description": "can get an nformaton about applicant by enter the applcant id\n\nStartFragment\n\nlocalhost:3000/applicant/get/**id**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "getAllApplicants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/applicant/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"applicant",
+								"getAll"
+							]
+						},
+						"description": "can get all applicants by usng ths url not need to enter any information"
+					},
+					"response": []
+				},
+				{
+					"name": "updateApplicant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"444444\",\r\n    \"phone\":\"0547977777\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/applicant/update/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"applicant",
+								"update",
+								"4"
+							]
+						},
+						"description": "can update any nformation in applicant by enter the applcant id and information need to change\n\nStartFragment\n\nlocalhost:3000/applicant/update/**id**\n\nEndFragmentStartFragment\n\n``` json\n{\n    \"firstName\":text,\n    \"lastName\": text,\n    \"email\":text,\n    \"phone\":text,\n    \"Address\":text,\n    \"password\":text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "saveJobSearch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/saveJob/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"saveJob",
+								"3"
+							]
+						},
+						"description": "can save a job that am search for it by enter the my id (applicant id) and job id\n\nStartFragment\n\nlocalhost:3000/saveJob/**applicant id**\n\nEndFragment\n\n  \n\nStartFragment\n\n``` json\n{\n    \"jobId\": number\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "get Saved Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/SavedJobs/get/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"SavedJobs",
+								"get",
+								"3"
+							]
+						},
+						"description": "get all saved jobs by enter the applcant id\n\nStartFragment\n\nlocalhost:3000/SavedJobs/get/**applicantid**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "delete job from save jobs",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/SavedJobs/delete/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"SavedJobs",
+								"delete",
+								"1"
+							]
+						},
+						"description": "can delete a job from saved jobs by enter the job id\n\nlocalhost:3000/SavedJobs/delete/**job id**\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job Application",
+			"item": [
+				{
+					"name": "application Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"coverLetter\":\"my-Cover-Letter6.com\"\r\n}\r\n\r\n/*\r\n    resumeUrl\r\n    coverLetter\r\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/application/update/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"application",
+								"update",
+								"1"
+							]
+						},
+						"description": "can update an information of an application by enter the application id and email any information need to change\n\nStartFragment\n\n[http://localhost:3000/application/update/**applicationid](http://localhost:3000/application/update/**applicationid)**\n\nEndFragment\n\nStartFragment\n\n``` json\n{\n    \"email\": your email,\n    \"resumeUrl\":new data,\n    \"coverLetter\":new data\n}\n\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "application Submission",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"jobId\":2,\r\n    \"email\":\"s11925874@stu.najah.edu\",\r\n    \"resumeUrl\":\"jhdfwlgbrsa\",\r\n    \"coverLetter\":\"cjsfvwuovfl;df;WBJRF\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/application/Submission",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"application",
+								"Submission"
+							]
+						},
+						"description": "can applicant to the applcation by enter this information\n\nStartFragment\n\n``` json\n{\n    \"jobId\": the id of the job,\n    \"email\":your email,\n    \"resumeUrl\":text,\n    \"coverLetter\":text\n}\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "seeAppSubmitted",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/application/seeAppSubmitted?applicantId=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"application",
+								"seeAppSubmitted"
+							],
+							"query": [
+								{
+									"key": "applicantId",
+									"value": "3"
+								}
+							]
+						},
+						"description": "the applicant can see your submitted applications by enter applicantid\n\nStartFragment\n\nhttp://localhost:3000/application/seeAppSubmitted?applicantId=**id**\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSubmittedApp",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/application/deleteSubmittedApp?id=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"application",
+								"deleteSubmittedApp"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						},
+						"description": "applicant can delete an application submitted by enter StartFragment jobApplication id\n\nEndFragmentStartFragment\n\nhttp://localhost:3000/application/deleteSubmittedApp?id= **jobApplication id**\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

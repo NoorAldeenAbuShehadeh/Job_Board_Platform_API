@@ -21,9 +21,17 @@ getSavedJobs.get('/get/:id', async (req , res) => {
         jobs.push(item)
     }
 
-    res.send({
+    if(jobs.length>0){
+      res.status(200).send({
         jobs,
     });
+    }
+    else{
+      res.status(204).send({
+        Message:'there is no saved jobs'
+    });
+    }
+
   });
 
   getSavedJobs.delete('/delete/:id', async (req , res) => {
@@ -41,11 +49,11 @@ getSavedJobs.get('/get/:id', async (req , res) => {
             }
           });
 
-          res.send({
+          res.status(200).send({
             Message:"the job deleted from saved jobs"
         });
     }else{
-        res.send({
+        res.status(404).send({
             Message:"this job not saved in your saved jobs"
         });
     }

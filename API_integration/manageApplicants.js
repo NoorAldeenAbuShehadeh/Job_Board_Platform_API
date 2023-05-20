@@ -26,7 +26,15 @@ const validateApplicationInfo = [
         jobId:job_id
     }
   });
-    res.send(applicants);
+  if(applicants.length>0){
+    res.status(200).send(applicants);
+  }  
+  else{
+    res.status(204).send({//in real word 204 no content
+      Message:'there is no applicants '
+    });
+  }
+    
 });
 
 /********************************************************************************************/
@@ -69,10 +77,10 @@ const validateEmployerInput = [
           id: jobApplicationId,
         },
       })
-      res.send(updated);
+      res.status(200).send(updated);
     }
     else{
-      res.send({
+      res.status(404).send({
         Message: 'There is no job applicant with id: ' + jobApplicationId,
       });
     }

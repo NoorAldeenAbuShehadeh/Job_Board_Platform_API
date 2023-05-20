@@ -45,12 +45,12 @@ const validateApplicationSubmission = [
         status:"pending",
     }
   });
-  res.send({
+  res.status(200).send({
     applicantJob,
   });
 }
   else{
-    res.send({
+    res.status(409).send({
       Message: 'This job already applied'
     });
   }
@@ -100,10 +100,10 @@ applicationSubmission.put('/update/:id', validateApplicantInput, async(req, res)
           id: +(req.params.id),
         },
       })
-      res.send(updated);
+      res.status(200).send(updated);
     }
     else{
-      res.send({
+      res.status(404).send({
         Message: 'There is no applicant with id: ' + req.params.id,
       });
     }
@@ -132,7 +132,12 @@ const { applicantId } = req.query;
     }
   });
   
-    res.send(findAppSubmitted);
+  if(findAppSubmitted)
+    res.status(200).send(findAppSubmitted);
+  else
+    res.status(204).send({
+      Message: 'no app submitted'
+    });
   
 });
 
@@ -166,11 +171,11 @@ const { id } = req.query;
         }
       });
 
-      res.send({
+      res.status(200).send({
         Message:"jobApplication with id = "+id+" Deleted successfully"
       });
     }
-    else res.send({
+    else res.status(404).send({
       Message:"No such jobApplication that have id= "+id
     });
   

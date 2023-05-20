@@ -37,9 +37,16 @@ searchJob.get('/',validateUserInput, async (req , res) => {
     where.salaryMin = {'gte': parseInt(salaryMin)};
   }
   const jobs = await prisma.job.findMany({ where });
-  res.send({
-    jobs,
-  });
+  if(jobs.length>0){
+    res.status(200).send({
+      jobs,
+    });
+  }
+  else{
+    res.status(204).send({ //No Content
+      Message: "No available jobs"
+    });
+  }
 });
 
 export default searchJob;

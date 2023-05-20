@@ -60,13 +60,13 @@ applicant.post('/add', validateUserInputPost, async (req, res) => {
               password,
             }
           });
-            res.send({
+            res.status(201).send({
               status: 'successfully created',
               applicant
             });
     }
     else{
-        res.send({
+        res.status(409).send({//conflict
             message: 'This email is used!'
           });
     }
@@ -110,12 +110,12 @@ applicant.post('/add', validateUserInputPost, async (req, res) => {
             id: +req.params.id,
         },
         })
-        res.send({   
+        res.status(200).send({   
         Message: 'The applicant with id: ' + req.params.id + ' deleted successfully',
         });
     }
     else{
-        res.send({
+        res.status(404).send({
         Message: 'There is no applicant with id: ' + req.params.id,
         });
     }
@@ -128,12 +128,12 @@ applicant.get('/get/:id', async(req, res) => {
         }
     });
     if(findApp){
-        res.send({
+        res.status(200).send({
             findApp,
         })
     }
     else{
-        res.send({
+        res.status(204).send({
             message: 'There is no applicant with id: ' + req.params.id,
         })
     }
@@ -143,12 +143,12 @@ applicant.get('/get/:id', async(req, res) => {
 applicant.get('/getAll/', async(req, res) => {
     const findApp = await prisma.applicant.findMany();
     if(findApp){
-        res.send({
+        res.status(200).send({
             findApp,
         })
     }
     else{
-        res.send({
+        res.status(204).send({
             message: 'There is no applicants registered',
         })
     }
@@ -188,15 +188,15 @@ applicant.put('/update/:id', validateUserInputPut, async(req, res) => {
         },
         data: newData,
       })
-      const appId = await prisma.applicant.findUnique({
+      const appData = await prisma.applicant.findUnique({
         where: {
           id: +(req.params.id),
         },
       })
-      res.send(appId);
+      res.status(200).send(appData);
     }
     else{
-      res.send({
+      res.status(404).send({
         Message: 'There is no applicant with id: ' + req.params.id,
       });
     }

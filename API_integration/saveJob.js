@@ -27,12 +27,13 @@ saveJob.post('/:id',saveJobValidation, async (req , res) => {
         jobId: jobId,
       }
     });
-    res.send({
+    res.status(201).send({//created (job saved)
+      Message:'Job saved',
       newJob,
     });
   }
   else{
-    res.send({
+    res.status(409).send({
       Message:'this job already saved'
     });
   }

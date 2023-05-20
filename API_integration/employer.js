@@ -55,13 +55,13 @@ employer.post('/add', validateUserInputPost, async (req, res) => {
               password,
             }
           });
-            res.send({
+            res.status(201).send({
               status: 'successfully created',
               employer
             });
     }
     else{
-        res.send({
+        res.status(409).send({ //conflict
             message: 'This email is used!'
           });
     }
@@ -80,12 +80,12 @@ employer.delete('/delete/:id', async(req, res) => {
             id: +req.params.id,
         },
         })
-        res.send({
+        res.status(200).send({
         Message: 'The employer with id: ' + req.params.id + ' deleted successfully',
         });
     }
     else{
-        res.send({
+        res.status(404).send({
         Message: 'There is no employer with id: ' + req.params.id,
         });
     }
@@ -98,12 +98,12 @@ employer.get('/get/:id', async(req, res) => {
         }
     });
     if(findEmp){
-        res.send({
+        res.status(200).send({
             findEmp,
         })
     }
     else{
-        res.send({
+        res.status(204).send({
             message: 'There is no employer with id: ' + req.params.id,
         })
     }
@@ -113,12 +113,12 @@ employer.get('/get/:id', async(req, res) => {
 employer.get('/getAll/', async(req, res) => {
     const findEmp = await prisma.employer.findMany();
     if(findEmp){
-        res.send({
+        res.status(200).send({
             findEmp,
         })
     }
     else{
-        res.send({
+        res.status(204).send({
             message: 'There is no employers registered',
         })
     }
@@ -160,10 +160,10 @@ employer.put('/update/:id', validateUserInputPut, async(req, res) => {
           id: +(req.params.id),
         },
       })
-      res.send(EmpId);
+      res.status(200).send(EmpId);
     }
     else{
-      res.send({
+      res.status(404).send({
         Message: 'There is no employer with id: ' + req.params.id,
       });
     }

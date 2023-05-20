@@ -61,7 +61,7 @@ Job.post('/add',validateUserInputPost, async (req , res) => {
         postedById:empId,
     }
   });
-  res.send({
+  res.status(201).send({//created
     newJob,
   });
 });
@@ -78,12 +78,12 @@ Job.delete('/delete/:id', async(req, res) => {
         id: +req.params.id,
       },
     })
-    res.send({
+    res.status(200).send({
       Message: 'The job with id: ' + req.params.id + ' deleted successfully',
     });
   }
   else{
-    res.send({
+    res.status(404).send({
       Message: 'There is no job with id: ' + req.params.id,
     });
   }
@@ -125,10 +125,10 @@ Job.put('/update/:id', validateUserInputPut, async(req, res) => {
         id: +(req.params.id),
       },
     })
-    res.send(jobId);
+    res.status(200).send(jobId);
   }
   else{
-    res.send({
+    res.status(404).send({
       Message: 'There is no job with id: ' + req.params.id,
     });
   }

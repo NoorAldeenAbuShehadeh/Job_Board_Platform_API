@@ -1,6 +1,8 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {body, validationResult} from 'express-validator'
+import hashPassword from './EncryptionPassword/hashPassword.js'
+import verifyPassword from './EncryptionPassword/verifyPassword.js'
 const prisma = new PrismaClient();
 const employer = express.Router();
 
@@ -37,7 +39,7 @@ const validateUserInputPost = [
       return res.status(422).json({ errors: extractedErrors });
     },
   ]
-
+/*********************************************************************** */
 employer.post('/add', validateUserInputPost, async (req, res) => {
     const { name, email, phone, Address, password } = req.body;
     const findEmp = await prisma.employer.findUnique({
@@ -46,13 +48,14 @@ employer.post('/add', validateUserInputPost, async (req, res) => {
         }
       });
     if(!findEmp){
+        const encryptedPassword = await hashPassword(password)
         const employer = await prisma.employer.create({
             data: {
               name,
               email,
               phone,
               Address,
-              password,
+              password: encryptedPassword,
             }
           });
             res.status(201).send({
@@ -67,7 +70,7 @@ employer.post('/add', validateUserInputPost, async (req, res) => {
     }
     
   });
-
+/************************************************************** */
 employer.delete('/delete/:id', async(req, res) => {
     const findEmp = await prisma.employer.findUnique({
         where: {
@@ -90,7 +93,7 @@ employer.delete('/delete/:id', async(req, res) => {
         });
     }
 });
-
+/*************************************************************** */
 employer.get('/get/:id', async(req, res) => {
     const findEmp = await prisma.employer.findUnique({
         where:{
@@ -109,7 +112,7 @@ employer.get('/get/:id', async(req, res) => {
     }
 
 });
-
+/************************************************************************* */
 employer.get('/getAll/', async(req, res) => {
     const findEmp = await prisma.employer.findMany();
     if(findEmp){
@@ -124,7 +127,7 @@ employer.get('/getAll/', async(req, res) => {
     }
 
 });
-
+/************************************************************************************ */
 employer.put('/update/:id', validateUserInputPut, async(req, res) => {
     const { name, email, phone, Address, password } = req.body;
     const findEmp = await prisma.employer.findUnique({
@@ -147,7 +150,7 @@ employer.put('/update/:id', validateUserInputPut, async(req, res) => {
         newData.Address = Address;
       }
       if (password) {
-        newData.password = password;
+        newData.password = await hashPassword(password);;
       }
       const updateEmp = await prisma.employer.update({
         where: {
@@ -169,6 +172,31 @@ employer.put('/update/:id', validateUserInputPut, async(req, res) => {
     }
     
   });
+/********************************************************************** */
 
+employer.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await prisma.employer.findUnique({
+    where: {
+      email,
+    }
+  });
 
-  export default employer;
+  if (!user) {
+    return res.status(404).json({ Message: 'User not found' });
+  }
+
+  try {
+    const passwordMatch = await verifyPassword(password, await hashPassword(password));
+    if (passwordMatch) {
+      return res.status(200).json({ Message: 'Login successful' });
+    } else {
+      return res.status(401).json({ Message: 'Invalid password' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ Message: 'Internal server error' });
+  }
+});
+
+export default employer;

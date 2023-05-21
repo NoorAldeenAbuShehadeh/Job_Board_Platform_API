@@ -1,6 +1,8 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {body, validationResult} from 'express-validator'
+import hashPassword from './EncryptionPassword/hashPassword.js'
+import verifyPassword from './EncryptionPassword/verifyPassword.js'
 const prisma = new PrismaClient();
 const applicant = express.Router();
 
@@ -50,6 +52,7 @@ applicant.post('/add', validateUserInputPost, async (req, res) => {
         }
       });
     if(!findApp){
+      const encryptedPassword = await hashPassword(password)
         const applicant = await prisma.applicant.create({
             data: {
               firstName,
@@ -57,7 +60,7 @@ applicant.post('/add', validateUserInputPost, async (req, res) => {
               email,
               phone,
               Address,
-              password,
+              password: encryptedPassword,
             }
           });
             res.status(201).send({
@@ -180,7 +183,7 @@ applicant.put('/update/:id', validateUserInputPut, async(req, res) => {
         newData.Address = Address;
       }
       if (password) {
-        newData.password = password;
+        newData.password = await hashPassword(password);
       }
       const updateApp = await prisma.applicant.update({
         where: {
@@ -202,6 +205,31 @@ applicant.put('/update/:id', validateUserInputPut, async(req, res) => {
     }
     
   });
+/**************************************************************************** */
 
+applicant.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await prisma.employer.findUnique({
+    where: {
+      email,
+    }
+  });
+
+  if (!user) {
+    return res.status(404).json({ Message: 'User not found' });
+  }
+
+  try {
+    const passwordMatch = await verifyPassword(password, await hashPassword(password));
+    if (passwordMatch) {
+      return res.status(200).json({ Message: 'Login successful' });
+    } else {
+      return res.status(401).json({ Message: 'Invalid password' });
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ Message: 'Internal server error' });
+  }
+});
 
 export default applicant;

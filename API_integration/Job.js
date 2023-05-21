@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {body, validationResult} from 'express-validator'
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const Job = express.Router();
 
@@ -42,7 +43,7 @@ const validateUserInputPost = [
   ]
 
 
-Job.post('/add',validateUserInputPost, async (req , res) => {
+Job.post('/add',validateUserInputPost, authenticateToken, async (req , res) => {
   const { title, description, location, requirements, salaryMin, salaryMax, email } = req.body;
   const empJob = await prisma.employer.findUnique({
     where: {
@@ -66,7 +67,7 @@ Job.post('/add',validateUserInputPost, async (req , res) => {
   });
 });
 
-Job.delete('/delete/:id', async(req, res) => {
+Job.delete('/delete/:id', authenticateToken, async(req, res) => {
   const findJob = await prisma.job.findUnique({
     where: {
       id: +req.params.id,
@@ -89,7 +90,7 @@ Job.delete('/delete/:id', async(req, res) => {
   }
 });
 
-Job.put('/update/:id', validateUserInputPut, async(req, res) => {
+Job.put('/update/:id', validateUserInputPut, authenticateToken, async(req, res) => {
   const { title, description, location, requirements, salaryMin, salaryMax } = req.body;
   const findJob = await prisma.job.findUnique({
     where: {

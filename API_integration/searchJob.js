@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {query, validationResult} from 'express-validator'
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const searchJob = express.Router();
 
@@ -21,7 +22,7 @@ const validateUserInput = [
   ]
 
 
-searchJob.get('/',validateUserInput, async (req , res) => {
+searchJob.get('/',validateUserInput, authenticateToken, async (req , res) => {
   const { title, location, salaryMin, salaryMax } = req.query;
   const where = {};
   if (title) {

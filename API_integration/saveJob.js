@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {body, validationResult} from 'express-validator'
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const saveJob = express.Router();
 
@@ -16,7 +17,7 @@ const saveJobValidation = [body('jobId').exists().withMessage('jobId must be def
     }
 ];
 
-saveJob.post('/:id',saveJobValidation, async (req , res) => {
+saveJob.post('/:id',saveJobValidation, authenticateToken, async (req , res) => {
     const { jobId } = req.body;
     if(!await prisma.saveJob.findFirst({where:{
       jobId

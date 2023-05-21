@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {query, body , validationResult} from 'express-validator'
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const manageApplicants = express.Router();
 
@@ -18,7 +19,7 @@ const validateApplicationInfo = [
   ]
 
 
-  manageApplicants.get('/seeAll',validateApplicationInfo, async (req , res) => {
+  manageApplicants.get('/seeAll',validateApplicationInfo, authenticateToken, async (req , res) => {
   const { jobId } = req.query;
   const job_id = Number(jobId);
   const applicants = await prisma.jobApplication.findMany({
@@ -53,7 +54,7 @@ const validateEmployerInput = [
   ]
 
 
-  manageApplicants.put('/update', validateEmployerInput, async(req, res) => {
+  manageApplicants.put('/update', validateEmployerInput, authenticateToken, async(req, res) => {
   const { jobApplicationId, status } = req.body;
     const findJobApp = await prisma.jobApplication.findUnique({
       where: {

@@ -1,6 +1,7 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import {body, validationResult, query} from 'express-validator'
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const applicationSubmission = express.Router();
 
@@ -21,7 +22,7 @@ const validateApplicationSubmission = [
   ]
 
 
-  applicationSubmission.post('/Submission',validateApplicationSubmission, async (req , res) => {
+  applicationSubmission.post('/Submission',validateApplicationSubmission, authenticateToken, async (req , res) => {
   const { jobId, email, resumeUrl, coverLetter } = req.body;
   const applicant = await prisma.applicant.findFirst({
     where: {
@@ -73,7 +74,7 @@ const validateApplicantInput = [
   ]
 
 
-applicationSubmission.put('/update/:id', validateApplicantInput, async(req, res) => {
+applicationSubmission.put('/update/:id', validateApplicantInput, authenticateToken, async(req, res) => {
   const { resumeUrl, coverLetter } = req.body;
     const findJobApp = await prisma.jobApplication.findUnique({
       where: {
@@ -124,7 +125,7 @@ const validateIDInput = [
 ]
 
 
-applicationSubmission.get('/seeAppSubmitted', validateIDInput, async(req, res) => {
+applicationSubmission.get('/seeAppSubmitted', validateIDInput, authenticateToken, async(req, res) => {
 const { applicantId } = req.query;
   const findAppSubmitted = await prisma.jobApplication.findMany({
     where: {
@@ -156,7 +157,7 @@ const validateIDAppSubmitted = [
 ]
 
 
-applicationSubmission.delete('/deleteSubmittedApp', validateIDAppSubmitted, async(req, res) => {
+applicationSubmission.delete('/deleteSubmittedApp', validateIDAppSubmitted, authenticateToken, async(req, res) => {
 const { id } = req.query;
   const findAppSubmitted = await prisma.jobApplication.findUnique({
     where: {

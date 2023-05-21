@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import {body, validationResult} from 'express-validator'
 import hashPassword from './EncryptionPassword/hashPassword.js'
 import verifyPassword from './EncryptionPassword/verifyPassword.js'
+import jwt from 'jsonwebtoken'
 const prisma = new PrismaClient();
 const employer = express.Router();
 
@@ -189,7 +190,8 @@ employer.post('/login', async (req, res) => {
   try {
     const passwordMatch = await verifyPassword(password, await hashPassword(password));
     if (passwordMatch) {
-      return res.status(200).json({ Message: 'Login successful' });
+      const token = jwt.sign({ user }, 'thisIsAccessTokenSecretForJwtToMakeAuthorization', { expiresIn: '1h' });
+      return res.status(200).json({ Message: 'Login successful', Token: token});
     } else {
       return res.status(401).json({ Message: 'Invalid password' });
     }

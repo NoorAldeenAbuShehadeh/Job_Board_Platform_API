@@ -1,11 +1,12 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
 import { body } from 'express-validator';
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const getSavedJobs = express.Router();
 
 
-getSavedJobs.get('/get/:id', async (req , res) => {
+getSavedJobs.get('/get/:id', authenticateToken, async (req , res) => {
     const applicantId = +req.params.id
     const savedJobs = await prisma.saveJob.findMany({
       where: {
@@ -35,7 +36,7 @@ getSavedJobs.get('/get/:id', async (req , res) => {
 
   });
 
-  getSavedJobs.delete('/delete/:id', async (req , res) => {
+  getSavedJobs.delete('/delete/:id', authenticateToken, async (req , res) => {
     const jobId = +req.params.id
     const {applicantId} = req.body
     const savedJob = await prisma.saveJob.findFirst({

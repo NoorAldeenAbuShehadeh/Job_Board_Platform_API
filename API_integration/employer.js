@@ -4,6 +4,7 @@ import {body, validationResult} from 'express-validator'
 import hashPassword from './EncryptionPassword/hashPassword.js'
 import verifyPassword from './EncryptionPassword/verifyPassword.js'
 import jwt from 'jsonwebtoken'
+import authenticateToken from './authorization.js';
 const prisma = new PrismaClient();
 const employer = express.Router();
 
@@ -129,7 +130,7 @@ employer.get('/getAll/', async(req, res) => {
 
 });
 /************************************************************************************ */
-employer.put('/update/:id', validateUserInputPut, async(req, res) => {
+employer.put('/update/:id', validateUserInputPut, authenticateToken, async(req, res) => {
     const { name, email, phone, Address, password } = req.body;
     const findEmp = await prisma.employer.findUnique({
       where: {
@@ -171,7 +172,6 @@ employer.put('/update/:id', validateUserInputPut, async(req, res) => {
         Message: 'There is no employer with id: ' + req.params.id,
       });
     }
-    
   });
 /********************************************************************** */
 
@@ -188,9 +188,9 @@ employer.post('/login', async (req, res) => {
   }
 
   try {
-    const passwordMatch = await verifyPassword(password, await hashPassword(password));
+    const passwordMatch = await verifyPassword(password, user.password);
     if (passwordMatch) {
-      const token = jwt.sign({ user }, 'thisIsAccessTokenSecretForJwtToMakeAuthorization', { expiresIn: '1h' });
+      const token = jwt.sign({ user }, 'thisIsAccessTokenSecretForJwtToMakeAuthorization', { expiresIn: '50s' });
       return res.status(200).json({ Message: 'Login successful', Token: token});
     } else {
       return res.status(401).json({ Message: 'Invalid password' });

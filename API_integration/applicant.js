@@ -221,7 +221,7 @@ applicant.post('/login', async (req, res) => {
   }
 
   try {
-    const passwordMatch = await verifyPassword(password, await hashPassword(password));
+    const passwordMatch = await verifyPassword(password, user.password);
     if (passwordMatch) {
       const token = jwt.sign({ user }, 'thisIsAccessTokenSecretForJwtToMakeAuthorization', { expiresIn: '1h' });
       return res.status(200).json({ Message: 'Login successful', Token: token });

@@ -1,5 +1,6 @@
 import express from 'express';
 import { PrismaClient } from "@prisma/client";
+import { body } from 'express-validator';
 const prisma = new PrismaClient();
 const getSavedJobs = express.Router();
 
@@ -36,16 +37,19 @@ getSavedJobs.get('/get/:id', async (req , res) => {
 
   getSavedJobs.delete('/delete/:id', async (req , res) => {
     const jobId = +req.params.id
+    const {applicantId} = req.body
     const savedJob = await prisma.saveJob.findFirst({
       where: {
-        jobId
+        jobId,
+        applicantId
       }
     });
 
     if(savedJob){
         await prisma.saveJob.deleteMany({
             where: {
-              jobId
+              jobId,
+              applicantId
             }
           });
 

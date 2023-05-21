@@ -13,10 +13,16 @@
 					"name": "addJob",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJuYW1lIjoiTm9vciBBbGRlZW4iLCJlbWFpbCI6InMxMTkyMzUxM0BzdHUubmFqYWguZWR1IiwicGhvbmUiOiIwNTk3MzU2MTg4IiwiQWRkcmVzcyI6Ik5hYmx1cyIsInBhc3N3b3JkIjoiJDJiJDEwJDhoeTVxV2JBUTVObThlNVRGOHh2UXVjYnhWY09Wd1pwRmxxYWw4dExyRmF6ZktFSGViLml1In0sImlhdCI6MTY4NDcwMTcyNiwiZXhwIjoxNjg0NzAxNzc2fQ.BDeWRxdhUYkUzhmKPvGKfCgNOxIzgP39gaWP_r9-jiU",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Computer engineer\",\r\n    \"description\": \"a front developer\",\r\n    \"location\": \"Nablus\",\r\n    \"requirements\": \"a BCs in CE\",\r\n    \"salaryMin\": 900,\r\n    \"salaryMax\": 2000,\r\n    \"email\": \"s11924343@stu.najah.edu\"\r\n}",
+							"raw": "{\r\n    \"title\": \"Computer engineer\",\r\n    \"description\": \"a full stack developer\",\r\n    \"location\": \"Nablus\",\r\n    \"requirements\": \"a BCs in CE\",\r\n    \"salaryMin\": 1500,\r\n    \"salaryMax\": 2200,\r\n    \"email\": \"s11924343@stu.najah.edu\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -42,7 +48,13 @@
 					"name": "deleteJob",
 					"request": {
 						"method": "DELETE",
-						"header": [],
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "localhost:3000/Job/delete/3",
 							"host": [
@@ -53,6 +65,13 @@
 								"Job",
 								"delete",
 								"3"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
 							]
 						},
 						"description": "delete a certan job by employer\n\nenter Jobid\n\nStartFragment\n\nlocalhost:3000/Job/delete/**id**\n\nEndFragment"
@@ -63,7 +82,13 @@
 					"name": "jobUpdate",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer ",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
 							"raw": "{\r\n    \"title\": \"Computer science\",\r\n    \"requirements\": \"a PHD in CS\"\r\n}",
@@ -95,7 +120,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3000/searchJob?salaryMax=2000",
+							"raw": "http://localhost:3000/searchJob?title=Computer science",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -107,8 +132,7 @@
 							"query": [
 								{
 									"key": "title",
-									"value": "Computer science",
-									"disabled": true
+									"value": "Computer science"
 								},
 								{
 									"key": "location",
@@ -122,7 +146,8 @@
 								},
 								{
 									"key": "salaryMax",
-									"value": "2000"
+									"value": "2000",
+									"disabled": true
 								}
 							]
 						},
@@ -236,10 +261,16 @@
 					"name": "updateEmployer",
 					"request": {
 						"method": "PUT",
-						"header": [],
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo0LCJuYW1lIjoiTm9vciBBbGRlZW4iLCJlbWFpbCI6InMxMTkyMzUxM0BzdHUubmFqYWguZWR1IiwicGhvbmUiOiIwNTk3MzU2MTg4IiwiQWRkcmVzcyI6Ik5hYmx1cyIsInBhc3N3b3JkIjoiJDJiJDEwJEJEaTdSNjc3YzlMUDFRRjNYYWJLWmVGWC9Nb1d0bFFmbkMxZjdBbHVqVVllT01KSzZNc3JXIn0sImlhdCI6MTY4NDcwMTQ2NiwiZXhwIjoxNjg0NzAxNTE2fQ.HqDbOhPzmJ53m2HEDrDrVQVbVu-t5DplSMZsPYYoi-I",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Haitham Hinnawi\",\r\n    \"password\": \"100200300\"\r\n}",
+							"raw": "{\r\n    \"password\": \"100200300\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -247,7 +278,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:3000/employer/update/1",
+							"raw": "localhost:3000/employer/update/4",
 							"host": [
 								"localhost"
 							],
@@ -255,7 +286,7 @@
 							"path": [
 								"employer",
 								"update",
-								"1"
+								"4"
 							]
 						},
 						"description": "can update the information of an employer by enter the employer id and any other information need to update it.\n\nStartFragment\n\nlocalhost:3000/employer/update/**id**\n\nEndFragmentStartFragment\n\n``` json\n{\n    \"name\":text,\n    \"email\":text,\n    \"phone\":text,\n    \"Address\":text,\n    \"password\":text\n}\n```\n\nEndFragment"
@@ -310,6 +341,34 @@
 							]
 						},
 						"description": "the employer can update status for the applicant applcation by enter the following information\n\nStartFragment\n\n``` json\n{\n    \"jobApplicationId\": number,\n    \"status\":text\n}\n\n/*\nstatus ==> pending, accepted, rejected\n*/\n```\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"s11923513@stu.najah.edu\",\r\n    \"password\":\"100200300\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/employer/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"employer",
+								"login"
+							]
+						}
 					},
 					"response": []
 				}
@@ -494,6 +553,15 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"applicantId\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "localhost:3000/SavedJobs/delete/1",
 							"host": [
@@ -627,6 +695,38 @@
 							]
 						},
 						"description": "applicant can delete an application submitted by enter StartFragment jobApplication id\n\nEndFragmentStartFragment\n\nhttp://localhost:3000/application/deleteSubmittedApp?id= **jobApplication id**\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "External APIs",
+			"item": [
+				{
+					"name": "get GitHup information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/users/:Name",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"users",
+								":Name"
+							],
+							"variable": [
+								{
+									"key": "Name",
+									"value": "NoorAldeenAbuShehadeh"
+								}
+							]
+						}
 					},
 					"response": []
 				}
